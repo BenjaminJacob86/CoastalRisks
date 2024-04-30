@@ -280,7 +280,7 @@ axi.set_ylabel('nutrients [mmol m' + '$^{-3}$'+ ']')
 axi.grid()
 axi.set_title('nutrients')
 
-ymin,ymax=axib.get_ylim()
+#ymin,ymax=axib.get_ylim()
 
 # o2
 def shade_hypox(axi):
@@ -305,15 +305,25 @@ except:
 axi.legend(bio_legend,ncol=3,frameon=False)
 axi.set_ylabel('biomass [mgC m' + '$^{-3}$'+ ']')
 axi.grid()
-
 #bio_legend[bio_legend.index('Cyano')]='cyano'
-
+axi.set_title('biota')
 # o2
 shade_hypox(axi)
 
 
+# River Discharge
 axi=ax[2,0]
-axi.axis('off')
+#axi.axis('off')
+axi.axis('on')
+axi.plot(Qt,-Q)
+axi.legend(['Q [m3/s]'],frameon=False)
+axi.set_xlim(t[0],t[-1])
+axi.set_ylim(0,3000)
+ax[2,0].set_xlim(t[0],t[-1])
+xt=axi.get_xticks()
+axi.set_xticks(xt[::4])
+shade_hypox(axi)
+axi.set_title('River Discharge')
 
 # detritus
 axi=ax[2,1]
@@ -324,7 +334,8 @@ axi.grid()
 
 # o2
 shade_hypox(axi)
-
+plt.tight_layout()
+plt.savefig('HypoxiaWarningQ.png',dpi=300)
 
 
 
@@ -335,7 +346,10 @@ for axi in [ax[1,0],ax[1,1],ax[2,1]]:
 	axi.set_xticklabels(axi.get_xticklabels(),rotation=45)
 plt.tight_layout()
 
+ax[2,0].set_xticklabels(axi.get_xticklabels(),rotation=45)
 plt.savefig('HypoxiaPlots2.png',dpi=300)
+
+ax[2,0].set_xticklabels(ax[2,0].get_xticklabels(),rotation=45)
 
 ihypox=np.where(ox<=60)[0]   # less than 60
 for axzom in ax.flatten()[2:]:
